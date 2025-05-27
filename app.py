@@ -27,18 +27,18 @@ def get_db_connection():
         # Render provides DATABASE_URL
         return psycopg2.connect(DATABASE_URL, sslmode='require')
     else:
-        # Local development
-        return psycopg2.connect(
-            host="localhost",
-            database="accounting",
-            user="postgres",
-            password="postgres"
-        )
+        # For local development - don't try to connect if no database
+        print("No DATABASE_URL found - running without database features")
+        return None
 
 # Initialize database
 def init_db():
     """Create tables if they don't exist"""
     conn = get_db_connection()
+    if not conn:
+        print("Skipping database initialization - no connection available")
+        return
+        
     cursor = conn.cursor()
     
     cursor.execute('''
