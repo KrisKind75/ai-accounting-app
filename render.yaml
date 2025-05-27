@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ai-accounting
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+databases:
+  - name: accounting-db
+    databaseName: accounting
+    user: accounting_user
+    plan: free
